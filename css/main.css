@@ -1,0 +1,8 @@
+
+* { padding: 0; margin: 0; background-color: black;}
+canvas { background: darkcyan; display: block; margin: 5px auto; }
+
+@font-face {
+    font-family: Love;
+    src: url('../assets/fonts/FB-LoveHearts.ttf');
+}
