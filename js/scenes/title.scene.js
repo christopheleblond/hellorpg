@@ -1,6 +1,6 @@
 SimpleSprite = function(imageId) {
     this.imageId = imageId
-    this.rect = { x: Screen.center.x, y: Screen.center.y, w: 32, h: 36 }
+    this.rect = { x: Screen.center.x, y: Screen.center.y, w: 90, h: 126 }
     this.previousPos = {x: this.rect.x, y: this.rect.y }
     this.velocity = new Vector(0, 0)
     this.speed = 100
@@ -43,11 +43,14 @@ SimpleSprite = function(imageId) {
         }        
         this.previousPos = {x: this.rect.x, y: this.rect.y }
 
-        //this.camera.rect.x = this.rect.x
-        //this.camera.rect.y = this.rect.y
+        this.camera.pointTo(this.rect.x, this.rect.y)
     }
     this.draw = (ctx) => {        
-        drawSprite(this.sprite, this.rect)
+        mainCamera.fillRectangle({ x: 10, y: 10, w: 200, h: 100}, 'blue')
+
+        mainCamera.fillRectangle({ x: Screen.width - 500, y: Screen.height - 100, w: 200, h: 100}, 'blue')
+
+        mainCamera.drawSprite(this.sprite, this.rect)
     }
 }
 
@@ -63,7 +66,7 @@ TitleScene = function(){
         this.player.update(dt)
     }
     this.draw = (ctx) => {
-        drawTexture('checker', this.camera.rect)
+        //this.camera.drawTexture('checker', Screen.rect)
         this.player.draw(ctx)
     }
     this.finish = () => {}

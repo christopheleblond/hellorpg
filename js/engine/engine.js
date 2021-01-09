@@ -1,5 +1,10 @@
 var canvasRef = document.getElementById('canvas')
 var ctx = canvasRef.getContext('2d')
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = true;
+
 
 // Loading screen
 printText('Loading', {x: canvasRef.width / 2, y: canvasRef.height / 2}, 20, Colors.WHITE, 'center')
@@ -62,23 +67,49 @@ var Timer = new Clock()
 Camera = function(position, size) {
     this.position = position
     this.size = size
-    this.rect = { x: this.position.x - this.size, y: this.position.y - this.size, w: this.size * 2, h: this.size * 2 }
-    this.center = { x: this.rect.x + (this.rect.w / 2), y: this.rect.y + (this.rect.h / 2) }        
+    this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size * 2, h: this.size * 2 }
 
-    this.update = (dt) => {
+    this.update = (dt) => {}
 
+    this.pointTo = (x, y) => {
+        this.position = { x: x, y: y }
+        this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size * 2, h: this.size * 2 }
     }
 
-    this.worldToScreen = (wpos) => ({ x: wpos.x - this.rect.x, y: wpos.y - this.rect.y })
-    this.screenToWorld = (spos) => ({ x: this.rect.x + spos.x, y: this.rect.y + spos.y })
+    this.worldToScreen = (wpos) => ({ x: wpos.x - this.position.x + this.size.w, y: wpos.y - this.position.y + this.size.h})
+    this.screenToWorld = (spos) => ({ x: this.position.x + spos.x, y: this.position.y + spos.y })
 
     this.fillRectangle = (rect, color) => {
         let screenPos = this.worldToScreen(rect)
         fillRectangle({ x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h}, color)
     }
+
+    this.strokeRectangle = (rect, color) => {
+        let screenPos = this.worldToScreen(rect)
+        strokeRectangle({ x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, color)
+    }
+
+    this.printText = (text, position, size, color, align = 'left')  => {
+        printText(text, this.worldToScreen(position), size, color, align)
+    }
+
+    this.drawImage = (imageId, rect, alpha = 1) => {
+        let screenPos = this.worldToScreen(rect)
+        drawImage(imageId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+    }
+
+    this.drawSprite = (spriteId, rect, alpha = 1) => {
+        let screenPos = this.worldToScreen(rect)
+        drawSprite(spriteId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+    }
+
+    this.drawTexture = (spriteId, rect, alpha = 1) => {
+        let screenPos = this.worldToScreen(rect)
+        drawTexture(spriteId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+    }
 }
 
-var mainCamera = new Camera({x: 0, y: 0}, 1)
+var mainCamera = new Camera({x: Screen.width / 2, y: Screen.height / 2}, { w: Screen.width / 2, h: Screen.height / 2})
 
 Game = function() {
     // Display management

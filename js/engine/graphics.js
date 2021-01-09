@@ -33,7 +33,7 @@ Circle = function(position, radius) {
 function fillRectangle(rect, color) {
     ctx.beginPath()
     ctx.globalAlpha = color.a
-    ctx.rect(rect.position.x, rect.position.y, rect.w, rect.h)
+    ctx.rect(rect.x, rect.y, rect.w, rect.h)
     ctx.fillStyle = color.toString()
     ctx.fill()
     ctx.closePath()
@@ -42,7 +42,7 @@ function fillRectangle(rect, color) {
 function strokeRectangle(rect, color) {
     ctx.beginPath()
     ctx.globalAlpha = color.a
-    ctx.rect(rect.position.x, rect.position.y, rect.w, rect.h)
+    ctx.rect(rect.x, rect.y, rect.w, rect.h)
     ctx.strokeStyle = color.toString()
     ctx.stroke()
     ctx.closePath()
