@@ -67,13 +67,37 @@ var Timer = new Clock()
 Camera = function(position, size) {
     this.position = position
     this.size = size
-    this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size * 2, h: this.size * 2 }
+    this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size.w * 2, h: this.size.h * 2 }
+    this.map = null
 
-    this.update = (dt) => {}
+    this.update = (dt) => {
+        
+    }
+
+    this.clampToMap = () => {
+        if(this.rect.x < 0) {
+            this.rect.x = 0
+            this.position.x = this.rect.x + this.size.w            
+        }else if(this.rect.x + this.rect.w > this.map.width) {
+            this.rect.x = this.map.width - this.rect.w
+            this.position.x = this.rect.x + this.size.w
+        }
+        if(this.rect.y < 0) {
+            this.rect.y = 0
+            this.position.y = this.rect.y + this.size.h
+        }else if(this.rect.y + this.rect.h > this.map.height) {
+            this.rect.y = this.map.height - this.rect.h
+            this.position.y = this.rect.y + this.size.h
+        }
+    }
 
     this.pointTo = (x, y) => {
         this.position = { x: x, y: y }
-        this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size * 2, h: this.size * 2 }
+        this.rect = { x: this.position.x - this.size.w, y: this.position.y - this.size.h, w: this.size.w * 2, h: this.size.h * 2 }
+        if(this.map) {
+            this.clampToMap()
+        }
+        
     }
 
     this.worldToScreen = (wpos) => ({ x: wpos.x - this.position.x + this.size.w, y: wpos.y - this.position.y + this.size.h})
@@ -93,7 +117,7 @@ Camera = function(position, size) {
         printText(text, this.worldToScreen(position), size, color, align)
     }
 
-    this.drawImage = (imageId, rect, alpha = 1) => {
+    this.drawImage = (imageId, rect = false, alpha = 1) => {
         let screenPos = this.worldToScreen(rect)
         drawImage(imageId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
     }
@@ -168,6 +192,8 @@ Game = function() {
         this.timer.update()
 
         this.inputManager.update(this.timer.deltaTime)
+
+        this.camera.update(this.timer.deltaTime)
 
         // Update logic
         if(this.sceneId != this._previousSceneId) {            
@@ -343,3 +369,15 @@ InputManager = function(doc, canvasRef) {
 }
 
 var Inputs = new InputManager(document, canvasRef)
+
+
+Map = function(mapId, width, height, camera) {
+    this.mapId = mapId
+    this.camera = camera
+    this.width = width
+    this.height = height
+
+    this.draw = (ctx) => {
+        this.camera.drawImage(this.mapId, {x: 0, y: 0, w: this.width, h: this.height})
+    }
+}

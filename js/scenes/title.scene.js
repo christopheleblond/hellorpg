@@ -3,7 +3,7 @@ SimpleSprite = function(imageId) {
     this.rect = { x: Screen.center.x, y: Screen.center.y, w: 90, h: 126 }
     this.previousPos = {x: this.rect.x, y: this.rect.y }
     this.velocity = new Vector(0, 0)
-    this.speed = 100
+    this.speed = 400
     this.camera = mainCamera
 
     this.dir = ''
@@ -56,18 +56,23 @@ SimpleSprite = function(imageId) {
 
 TitleScene = function(){    
     this.sceneId = 'Title'
-    this.player = new SimpleSprite('ninja')
+    this.player = new SimpleSprite('player')
     this.camera = mainCamera
+    this.map = new Map('demomap', 3000, 3000, mainCamera)
 
     this.start = () => {
         //playMusic('music01')
+        this.camera.map = this.map
     }
     this.update = (dt) => {      
         this.player.update(dt)
     }
     this.draw = (ctx) => {
+        this.map.draw(ctx)
         //this.camera.drawTexture('checker', Screen.rect)
         this.player.draw(ctx)
+
+        printText(JSON.stringify(mainCamera.rect), {x: 0, y: 20}, 20, 'black')
     }
     this.finish = () => {}
 }
