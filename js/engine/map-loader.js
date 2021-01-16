@@ -16,7 +16,7 @@ MapLoader = function(rootDir, camera) {
             return new Promise((res, rej) => {                
                 res(Object.assign(new Map(mainCamera), json))
             })
-        })    
+        })
 }
 
 var mapLoader = new MapLoader('/assets/maps', mainCamera)
