@@ -49,7 +49,7 @@ var IMAGES = {
     },
     'demomap': {
         id: 'demomap',
-        src: 'maps/demo.jpg'
+        src: 'maps/map.png'
     }
 }
 

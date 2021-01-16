@@ -1,5 +1,5 @@
 var GameSettings = {
     backgroundColor: 'darkcyan',
     showFps: false,
-    DEFAULT_FONT: 'Love'
+    DEFAULT_FONT: 'serif'
 }
