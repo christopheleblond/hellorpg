@@ -50,6 +50,7 @@ SimpleSprite = function(imageId) {
 
         this.rect.x += this.movement.x
         this.rect.y += this.movement.y
+        this.rect.z = this.rect.y + this.rect.h
         this.previousPos = {x: this.rect.x, y: this.rect.y }
 
         this.collider.x = this.rect.x + 20
@@ -129,22 +130,6 @@ SimpleSprite = function(imageId) {
     registerCollider(new Collider('player', this.collider, false, this.onCollision, this.onCollisionEnter, this.onCollisionExit))
 }
 
-Obstacle = function(id, rect, color) {
-    this.rect = rect
-    this.color = color
-
-    this.update = (dt) => {
-    }
-
-    this.draw = (ctx) => {
-        mainCamera.fillRectangle(this.rect, this.color)
-    }
-
-    this.onCollision = (other) => {}
-
-    registerCollider(new Collider('obstacle' + id, this.rect, true, this.onCollision))
-}
-
 TitleScene = function(){    
     this.sceneId = 'Title'
     this.player = new SimpleSprite('player')
@@ -156,12 +141,9 @@ TitleScene = function(){
     this.start = () => {
         mapLoader.loadMap('demo.json').then(map => {
             this.map = map
-            this.camera.map = this.map
-            /*this.obstacles.push(new Obstacle(0, { x: 10, y: 10, w: 300, h: 100 }, 'green'))
-            this.obstacles.push(new Obstacle(1, { x: 500, y: 800, w: 100, h: 300 }, 'brown'))
-            this.obstacles.push(new Obstacle(2, { x: 25, y: 2000, w: 500, h: 400 }, 'red'))            */
-            this.loaded = true
-            console.log('Scene loaded', this.map)
+            this.map.build()
+            this.camera.map = this.map            
+            this.loaded = true            
         })
         
     }
@@ -170,19 +152,18 @@ TitleScene = function(){
         this.player.update(dt)
     }
     this.draw = (ctx) => {
+        this.camera.cleanBuffer()
+
         if(!this.loaded) {
             printText('Loading', { x: Screen.width / 2, y: Screen.height / 2 }, 20, 'white')
             return
         }
 
-        this.map.draw(ctx)
-
-        //this.obstacles.forEach(o => o.draw(ctx))        
+        this.map.draw(ctx)        
 
         this.player.draw(ctx)        
-    }
-    this.finish = () => {}
 
-    Debug.print('player', this.player.rect)
-    Debug.print('camera', this.camera.position)
+        this.camera.render(ctx)
+    }
+    this.finish = () => {}    
 }

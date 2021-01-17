@@ -20,7 +20,11 @@ var IMAGES = {
             left02: { x: 90, y: 378, w: 90, h: 126 },
             left03: { x: 180, y: 378, w: 90, h: 126 },
         }
-    }    
+    },
+    'table': {
+        id: 'table',
+        src: 'sprites/table.png'
+    }
 }
 
 var SOUNDS = {

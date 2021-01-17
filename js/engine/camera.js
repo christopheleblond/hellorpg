@@ -5,8 +5,20 @@ Camera = function(position, size) {
     this.map = null
     this.target = null
 
+    this.renderList = []
+
     this.update = (dt) => {
         
+    }
+
+    this.cleanBuffer = () => { this.renderList = [] }
+
+    this.render = (ctx) => {
+        // Sort Z-Axis
+        this.renderList = this.renderList.sort((a, b) => a.z - b.z)
+        this.renderList.forEach(element => {
+            element.draw(ctx)
+        });
     }
 
     this.clampToMap = () => {
@@ -40,7 +52,7 @@ Camera = function(position, size) {
 
     this.fillRectangle = (rect, color) => {
         let screenPos = this.worldToScreen(rect)
-        fillRectangle({ x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h}, color)
+        fillRectangle({ x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h}, color)        
     }
 
     this.strokeRectangle = (rect, color) => {
@@ -52,14 +64,26 @@ Camera = function(position, size) {
         printText(text, this.worldToScreen(position), size, color, align)
     }
 
-    this.drawImage = (imageId, rect = false, alpha = 1) => {
-        let screenPos = this.worldToScreen(rect)
-        drawImage(imageId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+    this.drawImage = (imageId, rect = false, alpha = 1) => {      
+        debugger; 
+        this.renderList.push({
+            z: rect.z,
+            draw: () => {
+                let screenPos = this.worldToScreen(rect)
+                drawImage(imageId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+            }
+        })
     }
 
     this.drawSprite = (spriteId, rect, alpha = 1) => {
-        let screenPos = this.worldToScreen(rect)
-        drawSprite(spriteId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+        let screenPos = this.worldToScreen(rect)               
+        this.renderList.push({
+            z: rect.z,
+            draw: () => {                         
+                drawSprite(spriteId, { x: screenPos.x, y: screenPos.y, w: rect.w, h: rect.h }, alpha = 1)
+            }
+        })
+        
     }
 
     this.drawTexture = (spriteId, rect, alpha = 1) => {
