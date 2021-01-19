@@ -8,7 +8,9 @@ Camera = function(position, size) {
     this.renderList = []
 
     this.update = (dt) => {
-        
+        if(this.map) {
+            this.map.update(dt)
+        }
     }
 
     this.cleanBuffer = () => { this.renderList = [] }
@@ -64,8 +66,7 @@ Camera = function(position, size) {
         printText(text, this.worldToScreen(position), size, color, align)
     }
 
-    this.drawImage = (imageId, rect = false, alpha = 1) => {      
-        debugger; 
+    this.drawImage = (imageId, rect = false, alpha = 1) => {              
         this.renderList.push({
             z: rect.z,
             draw: () => {

@@ -90,6 +90,9 @@ Game = function() {
             this.scenes[this.sceneId].draw(ctx)                        
         }
 
+        if(DEBUG_COLLIDERS) {
+            drawColliders(ctx)
+        }
         Debug.draw()
     }
 }

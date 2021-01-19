@@ -1,3 +1,5 @@
+var DEBUG_COLLIDERS = false
+
 var Physics = {
     checkCollisionRect2Rect: (rect1, rect2) => {
         return rect1.x < rect2.x + rect2.w &&
@@ -29,6 +31,16 @@ Collider = function(id, rect, static, onCollisionCallback, onCollisionEnter, onC
     this.onCollisionEnter = onCollisionEnter
     this.onCollisionExit = onCollisionExit
     this.collisions = []
+
+    this.draw = (ctx) => {
+        if(DEBUG_COLLIDERS) {
+            mainCamera.strokeRectangle(this.rect, 'lightgreen')
+        }        
+    }
+}
+
+function drawColliders(ctx) {
+    for(let c of colliders) c.draw(ctx)
 }
 
 function registerCollider(collider) {

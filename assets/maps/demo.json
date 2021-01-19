@@ -40,5 +40,25 @@
                 "offsetH": -50
             }
         }
+    ],
+    "elements": [
+        {
+            "id": "pnj",
+            "class": "Pnj",           
+            "rect": {
+                "x": 500,
+                "y": 500,
+                "w": 90,
+                "h": 126,
+                "z": 500
+            },
+            "collider": {
+                "static": false,
+                "offsetX": 10,
+                "offsetY": 90,
+                "offsetW": -30,
+                "offsetH": -100
+            }
+        }
     ]
 }

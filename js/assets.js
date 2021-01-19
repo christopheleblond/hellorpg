@@ -21,6 +21,24 @@ var IMAGES = {
             left03: { x: 180, y: 378, w: 90, h: 126 },
         }
     },
+    'pnj': {
+        id: 'pnj',
+        src: 'sprites/pnj.png',
+        sprites: {
+            pnj_up01: { x: 0, y: 0, w: 90, h: 126 },
+            pnj_up02: { x: 90, y: 0, w: 90, h: 126 },
+            pnj_up03: { x: 180, y: 0, w: 90, h: 126 },
+            pnj_right01: { x: 0, y: 126, w: 90, h: 126 },
+            pnj_right02: { x: 90, y: 126, w: 90, h: 126 },
+            pnj_right03: { x: 180, y: 126, w: 90, h: 126 },
+            pnj_down01: { x: 0, y: 252, w: 90, h: 126 },
+            pnj_down02: { x: 90, y: 252, w: 90, h: 126 },
+            pnj_down03: { x: 180, y: 252, w: 90, h: 126 },
+            pnj_left01: { x: 0, y: 378, w: 90, h: 126 },
+            pnj_left02: { x: 90, y: 378, w: 90, h: 126 },
+            pnj_left03: { x: 180, y: 378, w: 90, h: 126 },
+        }
+    },
     'table': {
         id: 'table',
         src: 'sprites/table.png'

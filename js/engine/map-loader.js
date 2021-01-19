@@ -14,9 +14,29 @@ StaticElement = function(element) {
     }
 }
 
+ElementFactory = function() {
+    this.prefabs = {}
+
+    this.create = (prefabId, props) => {
+        if(!!this.prefabs[prefabId]) {
+            return this.prefabs[prefabId]['newInstance'](props)
+        }
+    }
+
+    this.registerPrefab = (prefabId, newInstanceFn) => {
+        this.prefabs[prefabId] = {
+            prefabId: prefabId,
+            newInstance: newInstanceFn
+        }
+    }
+}
+
+var elementsFactory = new ElementFactory()
+
 Map = function(camera) {
     this.camera = camera
     this.staticElements = []
+    this.elements = []
 
     this.build = () => {
         for(let i = 0; i < this.staticElements.length; i++) {
@@ -27,13 +47,30 @@ Map = function(camera) {
                 registerCollider(this.staticElements[i].collider)
             }
         }
+
+        for(let i = 0; i < this.elements.length; i++) {
+            const element = this.elements[i]
+
+            this.elements[i] = elementsFactory.create(element.class, element)
+        }
     }
+
+    this.update = (dt) => {
+        for(let i = 0; i < this.elements.length; i++) {
+            this.elements[i].update(dt)
+        }
+    }
+
     this.draw = (ctx) => {        
         this.camera.drawImage(this.background, { x: 0, y: 0, w: this.size.width, h: this.size.height })
 
         for(const e of this.staticElements) {
             if(!!e['draw']) e.draw(ctx)
         }        
+
+        for(const e of this.elements) {
+            if(!!e['draw']) e.draw(ctx)
+        }
     }
 }
 

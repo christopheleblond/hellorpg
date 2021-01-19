@@ -130,6 +130,30 @@ SimpleSprite = function(imageId) {
     registerCollider(new Collider('player', this.collider, false, this.onCollision, this.onCollisionEnter, this.onCollisionExit))
 }
 
+Pnj = function(props) {
+    this.sprite = 'pnj_down01'
+    this.rect = props.rect
+    
+    if(props.collider) {
+        let collider = { x: this.rect.x + props.collider.offsetX, y: this.rect.y + props.collider.offsetY, w: this.rect.w + props.collider.offsetW, h: this.rect.h + props.collider.offsetH }
+        this.collider = new Collider(props.collider.id, collider, props.collider.static)
+        registerCollider(this.collider)
+    }
+
+    this.update = (dt) => {
+        this.rect.z = this.rect.y + this.rect.h        
+    }
+
+    this.draw = (ctx) => {
+        mainCamera.drawSprite(this.sprite, this.rect)
+        mainCamera.strokeRectangle(this.collider.rect, 'lightgreen')
+    }
+}
+
+elementsFactory.registerPrefab('Pnj', (props) => {
+    return new Pnj(props)
+})
+
 TitleScene = function(){    
     this.sceneId = 'Title'
     this.player = new SimpleSprite('player')
@@ -159,6 +183,7 @@ TitleScene = function(){
             return
         }
 
+        
         this.map.draw(ctx)        
 
         this.player.draw(ctx)        
