@@ -1,4 +1,4 @@
-SimpleSprite = function(imageId) {
+Player = function(imageId) {
     this.imageId = imageId
     this.rect = { x: Screen.center.x, y: Screen.center.y, w: 90, h: 126 }    
     this.collider = { x: this.rect.x + 20, y: this.rect.y + 100, w: this.rect.w - 50, h: 20 }
@@ -11,7 +11,7 @@ SimpleSprite = function(imageId) {
 
     this.dir = ''
     this.sprite = 'right01' 
-    
+
     this.animations = {
         idle: new SpritesAnimation(['down01'], 0),
         idleUp: new SpritesAnimation(['up01'], 0),
@@ -57,6 +57,19 @@ SimpleSprite = function(imageId) {
         this.collider.y = this.rect.y + 90
 
         this._walking = this.velocity.x !== 0 || this.velocity.y !== 0
+    }
+
+    this.clampTo = (rect) => {
+        if(this.rect.x < rect.x) {
+            this.rect.x = rect.x
+        } else if(this.rect.x + this.rect.w > rect.w) {
+            this.rect.x = rect.w - this.rect.w
+        }
+        if(this.rect.y < rect.y) {
+            this.rect.y = rect.y
+        }else if(this.rect.y + this.rect.h > rect.h) {
+            this.rect.y = rect.h - this.rect.h
+        }
     }
 
     this.updateSprite = () => {
@@ -106,7 +119,7 @@ SimpleSprite = function(imageId) {
         this.camera.pointTo(this.rect.x, this.rect.y)
     }
     this.draw = (ctx) => {                
-        mainCamera.drawSprite(this.sprite, this.rect)
+        mainCamera.drawSprite(this.sprite, this.rect)        
     }
 
     this.onCollisionEnter = (other) => {}
@@ -127,6 +140,7 @@ SimpleSprite = function(imageId) {
     this.onCollisionExit = (other) => {        
         
     }    
+
     registerCollider(new Collider('player', this.collider, false, this.onCollision, this.onCollisionEnter, this.onCollisionExit))
 }
 
@@ -156,24 +170,28 @@ elementsFactory.registerPrefab('Pnj', (props) => {
 
 TitleScene = function(){    
     this.sceneId = 'Title'
-    this.player = new SimpleSprite('player')
+    this.player = new Player('player')
     this.camera = mainCamera
     this.map = null
     this.loaded = false
     this.obstacles = []
+    
+    this.menu = createUI([])
 
     this.start = () => {
-        mapLoader.loadMap('demo.json').then(map => {
+        mapLoader.loadMap('floor1.json').then(map => {
             this.map = map
             this.map.build()
             this.camera.map = this.map            
             this.loaded = true            
-        })
-        
+        })        
     }
     this.update = (dt) => {      
         if(!this.loaded) return
         this.player.update(dt)
+        this.player.clampTo({ x: this.map.margins.left, y: this.map.margins.top, w: this.map.size.width - this.map.margins.right, h: this.map.size.height - this.map.margins.bottom })
+
+        this.menu.update(dt)
     }
     this.draw = (ctx) => {
         this.camera.cleanBuffer()
@@ -182,13 +200,14 @@ TitleScene = function(){
             printText('Loading', { x: Screen.width / 2, y: Screen.height / 2 }, 20, 'white')
             return
         }
-
         
         this.map.draw(ctx)        
 
         this.player.draw(ctx)        
 
         this.camera.render(ctx)
+
+        this.menu.draw(ctx)
     }
     this.finish = () => {}    
 }

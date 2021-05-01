@@ -1,0 +1,70 @@
+{
+    "name": "floor1",
+    "size": {
+        "width": 2944,
+        "height": 1536
+    },
+    "margins": {
+        "top": 10,
+        "left": 10,
+        "right": 10,
+        "bottom": 10
+    },
+    "background": "floor1",
+    "staticElements": [
+        {
+            "id": "table01",
+            "sprite": "table",
+            "rect": {
+                "x": 100,
+                "y": 100,
+                "w": 100,
+                "h": 50
+            },
+            "collider": {
+                "static": true,
+                "offsetX": 0,
+                "offsetY": 25,
+                "offsetW": -20,
+                "offsetH": -25
+            }
+        },
+        {
+            "id": "table02",
+            "sprite": "table",
+            "rect": {                
+                "static": true,
+                "x": 100,
+                "y": 500,
+                "w": 300,
+                "h": 100
+            },
+            "collider": {
+                "offsetX": 0,
+                "offsetY": 50,
+                "offsetW": -30,
+                "offsetH": -50
+            }
+        }
+    ],
+    "elements": [
+        {
+            "id": "pnj",
+            "class": "Pnj",           
+            "rect": {
+                "x": 500,
+                "y": 500,
+                "w": 90,
+                "h": 126,
+                "z": 500
+            },
+            "collider": {
+                "static": false,
+                "offsetX": 10,
+                "offsetY": 90,
+                "offsetW": -30,
+                "offsetH": -100
+            }
+        }
+    ]
+}

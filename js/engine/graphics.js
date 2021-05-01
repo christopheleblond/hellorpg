@@ -15,7 +15,8 @@ var Colors = {
     RED: new Color(255, 0, 0, 1),
     GREEN: new Color(0, 255, 0, 1),
     BLUE: new Color(0, 0, 255, 1),
-    WHITE: new Color(255, 255, 255, 1)
+    WHITE: new Color(255, 255, 255, 1),
+    WHITE_50: new Color(255, 255, 255, 0.5)
 }
 
 Rectangle = function(position, w, h) {

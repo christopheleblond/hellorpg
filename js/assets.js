@@ -3,6 +3,10 @@ var IMAGES = {
         id: 'demomap',
         src: 'sprites/map.png'
     },
+    'floor1': {
+        id: 'floor1',
+        src: 'maps/HelloRPG_floor1.png'
+    },
     'player': {
         id: 'player',
         src: 'sprites/player.png',
